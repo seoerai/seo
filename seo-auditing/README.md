@@ -1,6 +1,6 @@
-# Technical SEO Audit Framework: 50-Point Inspection Protocol
+# 🔍 Technical SEO Audit Protocol: 50-Point Inspection Framework
 
-> **A first-principles guide to performing technical, content, and backlink SEO audits with structured severity scoring.**
+> **SEOER.AI Lab Spec // Module 21: First-principles engineering specification for technical, content, and backlink SEO audits with priority severity scoring.**
 
 ---
 
@@ -10,10 +10,10 @@ A **Technical SEO Audit** is a systematic inspection of a website's infrastructu
 
 ```mermaid
 flowchart TD
-    A[Start SEO Audit] --> B[Phase 1: Technical & Infrastructure Check]
-    B --> C[Phase 2: Indexation & Crawlability Check]
-    C --> D[Phase 3: Core Web Vitals & On-Page Audit]
-    D --> E[Phase 4: Content Quality & Backlink Health]
+    A[Start Technical SEO Audit] --> B[Phase 1: Infrastructure & Response Check]
+    B --> C[Phase 2: Indexation & Crawlability Inspection]
+    C --> D[Phase 3: Core Web Vitals & Rendering Performance]
+    D --> E[Phase 4: On-Page Semantic Schema Audit]
     E --> F[Generate Prioritized Action Plan by Severity]
 ```
 

@@ -1,6 +1,6 @@
-# Modern SEO & GEO Developer CLI Cheatsheet
+# ⚡️ Search Engineering & GEO Developer CLI Cheatsheet
 
-> **A practical CLI reference for developers, DevOps engineers, and search auditors. Includes cURL user-agent simulation, Lighthouse CLI, JSON-LD validation, and server log one-liners.**
+> **SEOER.AI Lab Spec // Module 23: First-principles developer CLI reference for cURL crawler simulation, Lighthouse CLI headless runners, server log forensics, and universal JSON-LD templates.**
 
 ---
 

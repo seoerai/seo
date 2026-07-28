@@ -1,59 +1,88 @@
-# Keyword Research & Search Intent Architecture
+# 🎯 Keyword Research & Search Intent Engine Architecture
 
-> **A first-principles guide to keyword research, search intent classification (Informational, Commercial, Navigational, Transactional), and difficulty scoring.**
+> **SEOER.AI Lab Spec // Module 17: First-principles engineering specification for keyword research, search intent classification (Informational, Commercial, Navigational, Transactional), Zipfian long-tail distribution math, and GSC opportunity mining.**
 
 ---
 
 ## 📌 Executive Summary
 
-**Keyword Research** is the process of discovering, analyzing, and structuring the actual search terms users type into search engines. Success in modern keyword research is not about hunting for high search volume alone—it is about accurately classifying **Search Intent** and selecting keywords matching your domain's topical authority and technical capacity.
+**Keyword Research** is the discovery, classification, and structural mapping of search queries typed into search engines. Success in modern search engineering requires moving beyond raw monthly volume metrics to accurately classify **Search Intent** and target queries matching your domain's topical authority.
 
 ```mermaid
 flowchart LR
-    A[User Enters Search Query] --> B{Determine Search Intent}
-    B -->|Informational: How to fix X| C[Publish Detailed Guide / Tutorial]
-    B -->|Commercial: Best X vs Y| D[Publish Comparison / Review Table]
-    B -->|Transactional: Buy X software| E[Publish Pricing & Signup Landing Page]
-    B -->|Navigational: X login| F[Optimize Brand Homepage / Portal]
+    A[User Natural Language Search Query] --> B{NLP Intent Classification Engine}
+    B -->|Informational: How to fix X| C[Publish In-Depth Technical Guide]
+    B -->|Commercial: Best X vs Y| D[Publish Comparison Table / pSEO Page]
+    B -->|Transactional: Buy X software| E[Publish Pricing & High-Converting Landing Page]
+    B -->|Navigational: X login| F[Optimize Brand Homepage Portal]
 ```
 
 ---
 
-## 1. The 4 Types of Search Intent
+## 1. Mathematical Foundation: Zipfian Power-Law Search Distribution
 
-| Intent Category | User Mindset | Keyword Example Signals | Best Target Page Type | Conversion Rate |
-| :--- | :--- | :--- | :--- | :--- |
-| **Informational** | Wants to learn or understand a concept. | *"How to"*, *"What is"*, *"Guide"*, *"Examples"* | Blog Post, Documentation | 1% – 3% |
-| **Commercial** | Comparing options before buying. | *"Best"*, *"vs"*, *"Top 10"*, *"Review"*, *"Alternative"* | Comparison Table, pSEO Page | 5% – 15% |
-| **Transactional** | Ready to purchase or sign up now. | *"Buy"*, *"Pricing"*, *"Discount"*, *"Sign up"* | Pricing Page, Landing Page | **15% – 30%+** |
-| **Navigational** | Looking for a specific brand or login page. | *"Kitwork docs"*, *"seoer.ai login"* | Brand Homepage | N/A (Direct) |
+Search query volume across any industry follows a **Zipfian Power-Law Distribution**:
 
----
+$$P(k) = \frac{1 / k^s}{\sum_{n=1}^{N} (1 / n^s)}$$
 
-## 2. Long-Tail vs. Head Keywords Matrix
+- $k$: Keyword frequency rank.
+- $s$: Value exponent (typically $s \approx 1$).
+- **Key Insight**: While 20% of search volume belongs to hyper-competitive Head Keywords (*"SEO"*), **80% of total search volume and 90% of conversions belong to Long-Tail Queries** (*"best programmatic SEO engine for Go"*).
 
 ```text
 ┌───────────────────────────────────────────────────────────────────────────┐
-│                      KEYWORD SEARCH SPECTRUM MATRIX                       │
+│                      ZIPFIAN SEARCH QUERY DISTRIBUTION                    │
 └───────────────────────────────────────────────────────────────────────────┘
-   Head Keyword (High Volume, High Competition) ──► "SEO" (Hard to Rank!)
-   Body Keyword (Med Volume, Med Competition)   ──► "Technical SEO Guide"
-   Long-Tail    (Low Volume, High Conversion)   ──► "Go SSR SEO Framework Benchmark" (Easy!)
+   Head Keywords (20% Volume, High Competition) ──► "SEO" (Hard to Rank!)
+   Body Keywords (30% Volume, Med Competition)  ──► "Technical SEO Guide"
+   Long-Tail     (50% Volume, High Conversion)  ──► "Go SSR SEO Benchmark 2026" (Easy!)
 ```
-
-- **Head Keywords**: Single broad terms (*"SaaS"*). Millions of searches, massive competition, vague intent.
-- **Long-Tail Keywords**: Specific multi-word phrases (*"best programmatic SEO tool for Next.js"*). Lower volume, low competition, **hyper-high conversion**.
 
 ---
 
-## 3. Finding Low-Hanging Keyword Opportunities
+## 2. Intent Classification Engine Matrix
 
-1. **Google Search Console (GSC) Impression Analysis**: Filter GSC for keywords where your page ranks in position #8–#20 with high impressions. Updating content title tags and internal links can jump ranking to position #1–#3.
-2. **Reddit & Forum Mining**: Search subreddits (`r/SaaS`, `r/webdev`) for recurring questions that lack high-quality search engine results.
-3. **Competitor Content Gap Analysis**: Identify long-tail keywords your competitors rank for but your domain has missed.
+| Intent Category | User Mindset | Target Keyword Signals | Target Component Page | Conversion Rate |
+| :--- | :--- | :--- | :--- | :--- |
+| **Informational** | Learning a technical concept. | *"How to"*, *"What is"*, *"Guide"*, *"Examples"* | Tech Article, Documentation | 1% – 3% |
+| **Commercial** | Evaluating options before buying. | *"Best"*, *"vs"*, *"Top 10"*, *"Review"*, *"Alternative"* | Comparison Table, pSEO Page | **8% – 18%** |
+| **Transactional** | Ready to purchase or sign up now. | *"Buy"*, *"Pricing"*, *"Discount"*, *"Sign up"* | Pricing Page, Landing Page | **15% – 35%+** |
+| **Navigational** | Searching for specific brand portal. | *"seoer.ai login"*, *"Kitwork docs"* | Brand Homepage | N/A (Direct) |
+
+---
+
+## 3. GSC Opportunity Keyword Mining Algorithm (Go Pattern)
+
+Mine your Google Search Console telemetry data for "striking distance" keywords (Position #8–#15) that can be easily pushed into the Top 3:
+
+```go
+// Go GSC Opportunity Keyword Mining Engine
+package main
+
+import "fmt"
+
+type KeywordOpportunity struct {
+	Query       string
+	Impressions int
+	Clicks      int
+	Position    float64
+	CTR         float64
+}
+
+func IdentifyStrikingDistanceKeywords(items []KeywordOpportunity) []KeywordOpportunity {
+	var opportunities []KeywordOpportunity
+	for _, item := range items {
+		// Filter for high-impression keywords ranking in Position 8.0 - 15.0
+		if item.Position >= 8.0 && item.Position <= 15.0 && item.Impressions > 500 {
+			opportunities = append(opportunities, item)
+		}
+	}
+	return opportunities
+}
+```
 
 ---
 
 ## 4. Summary
 
-Targeting the right search intent is 80% of SEO success. By focusing on high-intent Commercial and Transactional long-tail queries, software builders capture high-converting users without competing against multi-billion dollar incumbents for broad head terms.
+Targeting search intent is 80% of keyword strategy. By focusing on high-intent Commercial and Transactional long-tail queries ($P(k)$ distribution), software builders capture high-converting users without competing against multi-billion dollar incumbents for broad head terms.

@@ -1,6 +1,6 @@
-# Mobile SEO & Mobile-First Indexing Architecture
+# 📱 Mobile SEO & Mobile-First Indexing Architecture
 
-> **A first-principles guide to mobile-first indexing, responsive design optimization, touch target accessibility, and mobile viewport performance.**
+> **SEOER.AI Lab Spec // Module 25: First-principles engineering specification for mobile-first indexing, responsive design optimization, touch target accessibility, and mobile viewport performance.**
 
 ---
 

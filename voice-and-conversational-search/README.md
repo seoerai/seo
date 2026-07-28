@@ -1,6 +1,6 @@
-# Voice & Conversational Search: Position 0 & Speakable Microdata
+# 🗣️ Voice Search & Conversational Position 0 Architecture
 
-> **A first-principles guide to voice search optimization, capturing Position 0 Featured Snippets, conversational query structures, and Speakable Schema.org microdata.**
+> **SEOER.AI Lab Spec // Module 22: First-principles engineering specification for voice search optimization, Position 0 Featured Snippets, conversational query structures, and Speakable Schema.org microdata.**
 
 ---
 

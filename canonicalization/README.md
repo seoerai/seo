@@ -1,12 +1,12 @@
-# Canonicalization & Duplicate Content Management
+# 🔗 Canonicalization & Duplicate Content Architecture
 
-> **A first-principles guide to `rel=canonical` implementation, handling duplicate URLs, cross-domain canonicals, and URL parameter optimization.**
+> **SEOER.AI Lab Spec // Module 24: First-principles engineering specification for `rel=canonical` implementation, handling duplicate URLs, cross-domain canonicals, and URL parameter optimization.**
 
 ---
 
 ## 📌 Executive Summary
 
-**Canonicalization** is the process of specifying the authoritative "primary" URL for content accessible across multiple web addresses. When search engine crawlers encounter duplicate or near-identical content at different URLs, canonical tags instruct search engines which single URL to index and consolidate PageRank link equity toward.
+**Canonicalization** is the process of specifying the authoritative primary URL for content accessible across multiple web addresses. When search engine crawlers encounter duplicate or near-identical content at different URLs, canonical tags instruct search engines which single URL to index and consolidate PageRank link equity toward.
 
 ```mermaid
 flowchart TD

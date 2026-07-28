@@ -1,6 +1,6 @@
-# Content Pruning & Refresh Protocols: Eliminating Zombie Pages
+# ✂️ Content Pruning & Zombie Page Deletion Protocols
 
-> **A first-principles guide to content pruning, identifying low-value "zombie" pages, HTTP 301 vs 410 redirect protocols, and content refresh workflows.**
+> **SEOER.AI Lab Spec // Module 20: First-principles engineering specification for content pruning, identifying low-value "zombie" pages, HTTP 301 vs 410 redirect protocols, and crawl budget reclamation.**
 
 ---
 
