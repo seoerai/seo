@@ -1,76 +1,83 @@
-# Technical SEO Fundamentals: Infrastructure, Rendering & HTTP Diagnostics
+# ⚡️ Technical SEO Infrastructure & Edge Rendering Spec
 
-> **A first-principles engineering guide to technical SEO, HTTP response status codes, rendering pipelines (SSR vs CSR vs SSG), and crawlable web infrastructure.**
+> **SEOER.AI Lab Spec // Module 02: Infrastructure engineering, 2-wave Web Rendering Service (WRS) execution, TTFB < 50ms edge rendering, and HTTP status code diagnostics.**
 
 ---
 
 ## 📌 Executive Summary
 
-**Technical SEO** ensures that search engine crawlers (Googlebot, Bingbot, ClaudeBot, PerplexityBot) can efficiently discover, fetch, render, and index every critical URL on your web application. Without clean technical infrastructure, even world-class content will remain invisible in search results.
+**Technical SEO** is the infrastructure layer of search engine optimization. It guarantees that search crawlers (Googlebot, Bingbot, PerplexityBot) can fetch, parse, render, and index web pages without encountering technical friction, server bottlenecks, or JavaScript execution delays.
 
 ```mermaid
 flowchart LR
-    A[Crawler Requests URL] --> B{HTTP Status Code Check}
-    B -->|200 OK| C[DOM Parsing & Resource Fetching]
-    B -->|301 Redirect| D[Follow Target Canonical URL]
-    B -->|404 / 500 Error| E[Drop from Index / Retry Queue]
-    C --> F[JavaScript WRS Execution Queue]
-    F --> G[Indexation & Ranking Engine]
+    A[Crawler Requests URL] --> B{Edge Server Status Check}
+    B -->|HTTP 200 OK| C[Wave 1: Raw HTML & Header Parsing]
+    B -->|HTTP 301 Redirect| D[Follow Target Canonical Pointer]
+    B -->|HTTP 5xx Error| E[Back off Crawl Speed & Log Error]
+    C --> F[Wave 2: Chrome WRS Render Queue]
+    F --> G[DOM Hydration & Final Search Indexation]
 ```
 
 ---
 
-## 1. The Rendering Pipeline: SSR vs. CSR vs. SSG
+## 1. The 2-Wave Crawl & Rendering Architecture
 
-Search engines process web pages in a 2-wave rendering pipeline:
-1. **Wave 1 (HTML Parsing)**: The crawler reads raw static HTML immediately upon receipt.
-2. **Wave 2 (WRS Rendering)**: Web Rendering Service (WRS) queues JavaScript execution, which can be delayed by hours or days due to GPU/CPU resource constraints.
+Googlebot processes web pages in a two-stage rendering queue:
 
 ```text
 ┌───────────────────────────────────────────────────────────────────────────┐
-│                      RENDERING METHODOLOGY COMPARISON                     │
+│                     THE 2-WAVE WRS RENDERING ENGINE                       │
 └───────────────────────────────────────────────────────────────────────────┘
-   CSR (Client-Side Render)  ──► Empty HTML <div id="app"> ──► WRS Queue Delay ──► High Risk!
-   SSR (Server-Side Render)  ──► Full HTML returned on HTTP 200 ──► Wave 1 Index ──► Best!
-   SSG (Static Site Gen)    ──► Pre-compiled HTML at build time ──► Wave 1 Index ──► Fast & Best!
+   WAVE 1 (Instant)  ──► Raw Server HTTP 200 HTML Response ──► Immediate Indexing
+   WAVE 2 (Delayed)  ──► Chrome Headless WRS (JS Execution)  ──► Delayed up to 48 Hours!
 ```
 
-| Rendering Model | Initial HTML Content | Crawl Budget Efficiency | Indexing Velocity | Risk Level |
+### Rendering Model Comparison Matrix
+
+| Rendering Architecture | Initial HTML Content | Crawl Efficiency | Indexation Velocity | Failure Risk |
 | :--- | :--- | :--- | :--- | :--- |
-| **Server-Side Rendering (SSR)** | Full HTML content populated. | ⭐⭐⭐⭐⭐ (Instant) | Instant (Wave 1) | ✅ Low |
-| **Static Site Generation (SSG)** | Pre-built static HTML. | ⭐⭐⭐⭐⭐ (Instant) | Instant (Wave 1) | ✅ Low |
-| **Client-Side Rendering (CSR)** | Blank shell (`<div id="root"></div>`). | ⭐⭐ (Poor) | Delayed (Wave 2) | ⚠️ High Risk |
+| **Server-Side Rendering (SSR)** | Full HTML content populated. | ⭐⭐⭐⭐⭐ (Instant) | Instant (Wave 1) | ✅ Zero Risk |
+| **Static Site Generation (SSG)** | Pre-compiled static HTML. | ⭐⭐⭐⭐⭐ (Instant) | Instant (Wave 1) | ✅ Zero Risk |
+| **Client-Side Rendering (CSR)** | Blank shell (`<div id="app"></div>`). | ⭐⭐ (Poor) | Delayed (Wave 2) | ⚠️ High Risk |
 
 ---
 
-## 2. Critical HTTP Status Codes Matrix
+## 2. HTTP Status Code Engine Diagnostics
 
-| Code | Meaning | SEO Impact & Action Required |
+| Code | Status Type | Engine Action & SEO Impact |
 | :--- | :--- | :--- |
-| **200 OK** | Successful request. | Target status for all indexable canonical URLs. |
-| **301 Moved Permanently** | Permanent redirect. | Passes 90-99% PageRank link equity to target URL. |
-| **302 Found (Temporary)** | Temporary redirect. | Does NOT pass full link equity long-term; avoid for permanent migrations! |
-| **404 Not Found** | Page missing. | Signal to remove URL from index; clean up internal links. |
-| **410 Gone** | Explicitly permanently removed. | Faster index removal signal than 404. |
-| **500 / 503 Server Error** | Server overload or crash. | Googlebot backs off crawl frequency; prolonged 500s drop rankings! |
+| **200 OK** | Success | Primary target status for indexable canonical pages. |
+| **301 Moved Permanently** | Redirect | Passes 95%+ PageRank link equity to target URL. |
+| **302 Found (Temporary)** | Redirect | Temporary redirect; does NOT transfer full link equity long-term! |
+| **404 Not Found** | Client Error | Signals page missing; removes URL from search index over time. |
+| **410 Gone** | Client Error | Explicit permanent deletion signal; removes from index **2x faster than 404**. |
+| **500 / 503 Server Error** | Server Error | Server overload; causes Googlebot to immediately throttle crawl frequency! |
 
 ---
 
-## 3. The 5-Step Technical Health Diagnostic Checklist
+## 3. High-Performance Caddy / Go Headers
 
-```text
-┌───────────────────────────────────────────────────────────────────────────┐
-│                   TECHNICAL SEO HEALTH CHECKLIST                          │
-└───────────────────────────────────────────────────────────────────────────┘
-   [ ] 1. Single Canonical Version: Ensure http://, https://, non-www, and www resolve to 1 single URL.
-   [ ] 2. Response Time (TTFB): Time-To-First-Byte must be < 200ms.
-   [ ] 3. No Orphan Pages: Every indexable page has at least 1 internal hyperlink.
-   [ ] 4. Clean Header Tags: X-Robots-Tag does not block indexing unexpectedly.
-   [ ] 5. Valid XML Sitemap: Listed in robots.txt and submitted to Google Search Console.
+Configure origin server response headers for ultra-fast Time-To-First-Byte (TTFB < 50ms) and edge caching:
+
+```caddy
+# Caddy Production Technical SEO Header Rules
+seoer.ai {
+    encode zstd gzip
+    
+    header {
+        # Enable HTTP/3 QUIC & Security
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Robots-Tag "index, follow, max-snippet:-1, max-image-preview:large"
+        Server "SEOER-Engine/1.0"
+    }
+    
+    reverse_proxy localhost:8080
+}
 ```
 
 ---
 
 ## 4. Summary
 
-Technical SEO is the non-negotiable foundation of search visibility. By delivering full HTML via Server-Side Rendering (SSR) or Static Site Generation (SSG), maintaining clean HTTP 200/301 status codes, and eliminating JavaScript rendering delays, you guarantee maximum indexing speed.
+Technical SEO is non-negotiable software engineering. By serving pre-rendered HTML via SSR or SSG, keeping TTFB under 50ms with edge compression, maintaining clean HTTP 200/301 status codes, and eliminating CSR rendering delays, you guarantee maximum search engine indexation speed.
