@@ -1,73 +1,90 @@
-# Off-Page SEO & Backlink Acquisition: Digital PR & Domain Rating
+# 🌐 Off-Page SEO & Backlink Trust Engineering
 
-> **A first-principles guide to off-page SEO, backlink acquisition tactics, Domain Rating (DR/DA), Digital PR, and toxic link disavowal.**
+> **SEOER.AI Lab Spec // Module 11: First-principles engineering specification for off-page SEO, TrustRank vs PageRank algorithms, link velocity models, unlinked brand mention scanners, and toxic link disavowal.**
 
 ---
 
 ## 📌 Executive Summary
 
-**Off-Page SEO** refers to optimization actions taken outside of your own website to impact your rankings within search engine results pages. The primary currency of off-page SEO is **Backlinks** (inbound hyperlinks from external domains). Search engines treat high-quality external backlinks as third-party votes of confidence in your domain's credibility and authority.
+**Off-Page SEO** evaluates external signals of domain authority, credibility, and trust. The core signal remains **Backlinks** (inbound hyperlinks from external domains). Search algorithms process backlinks not merely as votes of popularity, but as directional vectors of **TrustRank** propagating from reputable seed domains (universities, government portals, major media outlets).
 
 ```mermaid
 flowchart LR
-    A[External High-Authority Website: DR 80+] -->|Passes Backlink Equity & Trust| B[Your Domain: seoer.ai]
-    B --> C[Domain Rating & Trust Flow Increases]
-    C --> D[Higher Organic SERP Rankings for All Pages]
+    A[High-Trust Seed Domain: DR 90+] -->|Passes TrustRank Equity| B[Intermediate Industry Publisher]
+    B -->|Contextual Dofollow Link| C[Your Domain: seoer.ai]
+    C --> D[Domain Trust Score & PageRank Compound]
+    D --> E[Elevated SERP Rankings for All URLs]
 ```
 
 ---
 
-## 1. Quality Over Quantity: The Backlink Evaluation Framework
+## 1. Mathematical Model: TrustRank vs. PageRank
 
-Not all backlinks are created equal. A single backlink from a reputable, high-DR domain (e.g., GitHub, TechCrunch, W3C) is worth more than 1,000 low-quality forum spam links.
+While PageRank measures pure link quantity and pass-through authority, **TrustRank** measures the distance between your domain and a manually verified set of non-spam "Seed Domains" $S$:
+
+$$TR(p) = \alpha \cdot \sum_{q \in IN(p)} \frac{TR(q)}{|OUT(q)|} + (1-\alpha) \cdot v_p$$
+
+- $v_p = \frac{1}{|S|}$ if page $p \in S$ (Seed Domain), otherwise $0$.
+- $\alpha$: Damping factor ($0.85$).
+- **Key Insight**: A single backlink from a domain 1 hop away from a Seed Domain passes $100\times$ more TrustRank than 1,000 links from unverified PBN (Private Blog Network) domains!
+
+---
+
+## 2. Unlinked Brand Mention Regex Scanner (Go Engine)
+
+Reclaim unlinked brand mentions by scanning web data for occurrences of your product name without an anchor tag:
+
+```go
+// Go Unlinked Brand Mention Scanner
+package main
+
+import (
+	"fmt"
+	"regexp"
+)
+
+func FindUnlinkedMentions(html string, brandName string) []string {
+	// Match brand name NOT enclosed inside <a ...>brand</a> tags
+	pattern := fmt.Sprintf(`(?i)(?:^|[^<a[^>]*>])(%s)(?:[^</a>]|$)`, regexp.QuoteMeta(brandName))
+	re := regexp.MustCompile(pattern)
+	return re.FindAllString(html, -1)
+}
+```
+
+---
+
+## 3. Link Velocity & Anchor Text Risk Scorecard
+
+Rapid, unnatural spikes in backlink acquisition trigger Google Penguin spam filters. Maintain organic link velocity parameters:
 
 ```text
 ┌───────────────────────────────────────────────────────────────────────────┐
-│                      THE BACKLINK QUALITY SCORECARD                       │
+│                    ANCHOR TEXT DISTRIBUTION BENCHMARK                     │
 └───────────────────────────────────────────────────────────────────────────┘
-   1. Domain Authority / DR:   Is the linking site trusted (DR 50+)?
-   2. Topical Relevance:       Is the linking site in the same industry/niche?
-   3. Link Placement:          Is the link inside editorial body text vs footer/sidebar?
-   4. Follow vs Nofollow:      Is it a standard dofollow link passing link equity?
+   Branded Anchors ("seoer.ai", "Seoer")        ──► 50% to 60%  (Safe Target)
+   Naked URLs ("https://seoer.ai")               ──► 20% to 25%  (Safe Target)
+   Partial Match ("seo audit software")          ──► 10% to 15%  (Safe Target)
+   Exact Match Keyword ("best technical seo")    ──► < 5% ONLY!  (Over-optimization Risk!)
 ```
 
 ---
 
-## 2. 4 High-Impact Indie Backlink Acquisition Strategies
+## 4. Automated Disavow File Generator Protocol
 
-### Strategy 1: Engineering-as-Marketing (Free Tools)
-Build a useful, free standalone tool (e.g., SVG generator, JSON-LD Schema validator, free calculator). Free tools naturally attract organic blog mentions, dev bookmark lists, and high-DR editorial backlinks.
-
-### Strategy 2: Original Data & Benchmark Reports
-Publish original industry data, speed benchmarks, or survey results. Tech journalists and bloggers link to original data sources when writing articles.
-
-### Strategy 3: Unlinked Brand Mention Reclamation
-Set up Google Alerts for your brand name (`"seoer.ai"` or `"Kitwork"`). Reach out to authors who mentioned your product without a link and politely ask them to turn the mention into a clickable hyperlink.
-
-### Strategy 4: High-DR Startup Directories
-Submit your product to established startup directories:
-- **Product Hunt** (DR 90+)
-- **AlternativeTo** (DR 80+)
-- **SaaSHub** (DR 70+)
-- **GitHub Awesome Lists** (DR 90+)
-
----
-
-## 3. Handling Toxic Links & The Disavow Tool
+Format disavow directives for Google Search Console to reject toxic spam domains:
 
 ```text
-┌───────────────────────────────────────────────────────────────────────────┐
-│                       DISAVOW FILE SYNTAX (disavow.txt)                   │
-└───────────────────────────────────────────────────────────────────────────┘
-   # Disavow spammy domain network
-   domain:spammysite.xyz
-   domain:pbn-network.info
-```
+# Disavow Directive Syntax (disavow.txt)
+# Suspicious PBN Network
+domain:spamblognetwork.xyz
+domain:cheapbacklinks.info
 
-If your domain suffers negative SEO attacks or accumulated legacy spam links, submit a `disavow.txt` file through Google Search Console to instruct Googlebot to ignore those specific links.
+# Specific Toxic URL
+https://toxic-directory.com/bad-link-page.html
+```
 
 ---
 
-## 4. Summary
+## 5. Summary
 
-Off-Page SEO builds domain trust and authority. By shipping free engineering tools, publishing original data reports, reclaiming unlinked brand mentions, and keeping your link profile clean, you earn high-authority backlinks that elevate your entire domain.
+Off-page SEO is link topology and trust verification. By acquiring backlinks close to TrustRank seed domains, maintaining natural anchor text distributions (<5% exact match), scanning for unlinked brand mentions, and disavowing spam domains, you build unbreakable domain authority.

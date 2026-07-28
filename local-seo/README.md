@@ -1,63 +1,77 @@
-# Local SEO & Google Business Profile Optimization
+# 📍 Local SEO & Geographic Search Optimization
 
-> **A first-principles guide to local search engine optimization, Google Local 3-Pack rankings, NAP consistency, and local Schema.org microdata.**
+> **SEOER.AI Lab Spec // Module 12: First-principles engineering specification for local search optimization, Haversine geographic proximity algorithms, NAP consistency verification, and LocalBusiness JSON-LD microdata.**
 
 ---
 
 ## 📌 Executive Summary
 
-**Local SEO** is the process of optimizing your online presence to attract local customers from geographically constrained searches (e.g., *"web development agency in Da Nang"*, *"SaaS consultant near me"*). Local SEO centers around Google Business Profile (GBP) optimization, local citation consistency (NAP), and LocalBusiness structured data.
+**Local SEO** optimizes web applications to rank for geographically constrained queries (e.g., *"web development agency in Da Nang"*, *"SaaS consultant near me"*). Google evaluates local search using three primary variables: **Relevance**, **Prominence**, and **Geographic Proximity**.
 
 ```mermaid
 flowchart TD
-    A[User Searches Local Query] --> B{Google Evaluates Local Signal}
-    B -->|Proximity, Relevance & Prominence| C[Google Local 3-Pack Map Results]
-    B -->|Local Schema & Citations| D[Organic Local Search Results]
-    C --> E[Inbound Calls, Directions & Visits]
-    D --> E
+    A[User Executes Local Search Query] --> B[Calculate Haversine Distance between User & Business]
+    B --> C[Evaluate Google Business Profile Prominence & Reviews]
+    C --> D[Verify NAP Consistency across Local Directories]
+    D --> E[Render Google Local 3-Pack Map Results]
 ```
 
 ---
 
-## 1. The 3 Local Ranking Factors
+## 1. Mathematical Foundation: The Haversine Distance Formula
 
-Google determines local search rankings based on three core criteria:
+Google Local algorithms calculate the distance $d$ between the user's GPS/IP coordinates $(\phi_1, \lambda_1)$ and the business location $(\phi_2, \lambda_2)$ using the **Haversine Formula**:
 
-1. **Relevance**: How well your local business profile matches what the user is searching for.
-2. **Distance (Proximity)**: How far your business location is from the searcher's physical location or geographic query term.
-3. **Prominence**: How famous or well-regarded your business is (reviews count, rating score, local backlinks, citations).
+$$a = \sin^2\left(\frac{\Delta \phi}{2}\right) + \cos(\phi_1) \cdot \cos(\phi_2) \cdot \sin^2\left(\frac{\Delta \lambda}{2}\right)$$
+
+$$c = 2 \cdot \text{atan2}\left(\sqrt{a}, \sqrt{1-a}\right), \quad d = R \cdot c$$
+
+- $\phi$: Latitude in radians.
+- $\lambda$: Longitude in radians.
+- $R$: Earth's radius ($6,371\text{ km}$).
+- **Proximity Weight**: Businesses located within $d \le 5\text{ km}$ of the searcher receive a major ranking boost in the Local 3-Pack.
 
 ---
 
-## 2. NAP Consistency (Name, Address, Phone)
+## 2. NAP (Name, Address, Phone) String Normalization
 
-```text
-┌───────────────────────────────────────────────────────────────────────────┐
-│                       NAP CONSISTENCY AUDIT MATRIX                        │
-└───────────────────────────────────────────────────────────────────────────┘
-   Google Business Profile ──►  seoer.ai | Da Nang, Vietnam | +84 905 000 000
-   Website Footer          ──►  seoer.ai | Da Nang, Vietnam | +84 905 000 000
-   Local Directory         ──►  seoer.ai | Da Nang, Vietnam | +84 905 000 000
+Inconsistent phone numbers, address abbreviations, or name variations confuse local search algorithms:
+
+```javascript
+// JavaScript NAP Normalization Engine
+function normalizeNap(addressString) {
+  return addressString
+    .toLowerCase()
+    .replace(/\bstreet\b/g, 'st')
+    .replace(/\broad\b/g, 'rd')
+    .replace(/\bavenue\b/g, 'ave')
+    .replace(/[^a-z0-9\s]/g, '') // Remove punctuation
+    .trim();
+}
 ```
 
-> **The Local Rule**: Your Business Name, Address, and Phone Number (NAP) must be **100% identical** across every directory, website footer, and social profile. Inconsistent phone numbers or address abbreviations confuse local ranking algorithms.
-
 ---
 
-## 3. LocalBusiness Schema.org Microdata
+## 3. Production LocalBusiness JSON-LD Schema
 
-Embed `LocalBusiness` JSON-LD microdata on your contact and local landing pages:
+Embed nested `LocalBusiness` JSON-LD microdata on contact and local landing pages:
 
 ```html
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "seoer.ai",
-  "image": "https://seoer.ai/logo.png",
+  "@type": "ProfessionalService",
+  "@id": "https://seoer.ai/#localbusiness",
+  "name": "seoer.ai Search Engineering Lab",
+  "url": "https://seoer.ai",
+  "telephone": "+84905000000",
+  "priceRange": "$$",
   "address": {
     "@type": "PostalAddress",
+    "streetAddress": "Da Nang Tech Center",
     "addressLocality": "Da Nang",
+    "addressRegion": "Da Nang",
+    "postalCode": "550000",
     "addressCountry": "VN"
   },
   "geo": {
@@ -65,8 +79,12 @@ Embed `LocalBusiness` JSON-LD microdata on your contact and local landing pages:
     "latitude": 16.0544,
     "longitude": 108.2022
   },
-  "url": "https://seoer.ai",
-  "telephone": "+84905000000"
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    "opens": "09:00",
+    "closes": "18:00"
+  }
 }
 </script>
 ```
@@ -75,4 +93,4 @@ Embed `LocalBusiness` JSON-LD microdata on your contact and local landing pages:
 
 ## 4. Summary
 
-Local SEO captures high-intent geographically targeted customers. By optimizing your Google Business Profile, enforcing strict NAP consistency across directories, and embedding LocalBusiness JSON-LD schema, you dominate local map pack results.
+Local SEO captures high-intent geographic customers. By calculating Haversine distance proximity, enforcing normalized NAP consistency across directories, and embedding structured LocalBusiness JSON-LD microdata, you command Google Local 3-Pack map rankings.
