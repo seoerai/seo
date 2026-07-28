@@ -1,67 +1,75 @@
-# Semantic SEO & Entity Mapping: Topical Authority & Knowledge Graphs
+# 🧠 Semantic SEO & Entity Knowledge Graphs
 
-> **A first-principles guide to Semantic SEO, Google Knowledge Graph entities, topical authority, and LSI semantic relevance mapping.**
+> **SEOER.AI Lab Spec // Module 03: First-principles engineering specification for entity extraction, Knowledge Graphs, LSI co-occurrence, TF-IDF vs BM25 vs Vector embeddings, and topical authority scoring.**
 
 ---
 
 ## 📌 Executive Summary
 
-**Semantic SEO** is the practice of optimizing content around **concepts and entities** rather than isolated keywords. Search engines use Natural Language Processing (NLP) and Knowledge Graphs to understand the relationships between people, places, technologies, and concepts. Establishing **Topical Authority** means thoroughly covering a subject so completely that search engines recognize your domain as an authoritative entity.
+**Semantic SEO** is the practice of structuring content around **entities and relationships** rather than literal keyword strings. Modern search engines and AI answer engines do not view web pages as strings of words; they parse pages into **Knowledge Graphs** composed of discrete entity nodes and directional edges. Establishing **Topical Authority** requires covering all connected entities within a subject domain.
 
 ```mermaid
 flowchart TD
-    A[Core Entity: Go Language] --> B[Related Entity: Bytecode Engine]
-    A --> C[Related Entity: Memory Allocation]
-    A --> D[Related Entity: Concurrency Routines]
-    B --> E[Entity Node: Stack VM]
-    C --> F[Entity Node: Garbage Collection]
-    D --> G[Entity Node: Channels & Goroutines]
+    A[Core Subject Entity: Go Runtime Engine] -->|Has Component| B[Entity: Stack-Based VM]
+    A -->|Manages| C[Entity: Memory Garbage Collector]
+    A -->|Provides| D[Entity: Concurrency Goroutines]
+    B -->|Executes| E[Entity: Bytecode Instructions]
+    C -->|Optimizes| F[Entity: Heap & Stack Allocation]
+    D -->|Communicates via| G[Entity: Channels]
 ```
 
 ---
 
-## 1. What is an Entity in Modern Search?
+## 1. Mathematical Scoring: TF-IDF vs. BM25 vs. Vector Embeddings
 
-An **Entity** is a well-defined concept or object that is unique, distinguishable, and machine-readable (e.g., *"Go Programming Language"*, *"Da Nang"*, *"Googlebot"*).
+Search engines evaluate text relevance using three historical and modern algorithmic models:
+
+### A. TF-IDF (Term Frequency - Inverse Document Frequency)
+$$\text{TF-IDF}(t, d, D) = \text{TF}(t, d) \times \log \left( \frac{N}{\text{DF}(t)} \right)$$
+- Measures how rare and important a word $t$ is across all documents $D$.
+
+### B. BM25 (Best Matching 25 - Industrial Standard)
+$$\text{Score}(D, Q) = \sum_{i=1}^{n} \text{IDF}(q_i) \cdot \frac{f(q_i, D) \cdot (k_1 + 1)}{f(q_i, D) + k_1 \cdot \left(1 - b + b \cdot \frac{|D|}{\text{avgdl}}\right)}$$
+- Accounts for document length normalization ($|D| / \text{avgdl}$) and term frequency saturation ($k_1$).
+
+### C. Vector Cosine Embedding (Modern AI Search)
+Calculates high-dimensional semantic similarity regardless of literal word matching.
+
+---
+
+## 2. Topical Coverage Ratio ($\text{TCR}$) Formula
+
+To achieve unbreakable topical authority in search engines, calculate your domain's **Topical Coverage Ratio**:
+
+$$\text{TCR} = \frac{\text{Published Sub-Entity Topics}}{\text{Total Domain Entity Graph Nodes}} \times 100$$
 
 ```text
 ┌───────────────────────────────────────────────────────────────────────────┐
-│                      KEYWORD-BASED VS ENTITY-BASED SEO                    │
+│                    TOPICAL COVERAGE RATIO SCORECARD                       │
 └───────────────────────────────────────────────────────────────────────────┘
-   Keyword Model  ──► Counts word frequency (e.g., "Go web framework" 5x times) [Outdated]
-   Entity Model   ──► Understands relationships between Go, HTTP router, VM, and memory [Modern]
+   TCR < 40%:  Superficial Coverage (Low Ranking Authority)
+   TCR 40-75%: Moderate Authority (Ranks for Long-Tail Only)
+   TCR > 80%:  Topical Dominance (Ranks for High-Volume Head Keywords!)
 ```
 
 ---
 
-## 2. Establishing Topical Authority
+## 3. Entity Co-occurrence Mapping Matrix
 
-Topical authority is earned when a domain publishes comprehensive, inter-linked coverage across every sub-topic within a specialized domain.
+When targeting a primary subject entity, search algorithms expect a predictable set of **co-occurring secondary entities** on the page.
 
-### The 4 Steps to Building Topical Authority
+*Example*: Target Entity = `"PostgreSQL Indexing"`
 
-1. **Map the Topic Entity Graph**: Identify all primary, secondary, and tertiary entities associated with your core subject.
-2. **Construct Pillar-Cluster Pages**: Write 1 comprehensive Pillar Page for the main entity and 10–20 supporting Cluster articles for related sub-entities.
-3. **Contextual Internal Hyperlinking**: Connect sibling articles within the cluster using descriptive anchor text representing the target sub-entity.
-4. **Avoid Keyword Cannibalization**: Ensure each URL targets 1 unique entity concept to prevent self-competing in search results.
-
----
-
-## 3. NLP & Semantic Co-occurrence (LSI) Optimization
-
-Natural Language Processing algorithms evaluate content by scanning for expected **semantic co-occurrences**.
-
-*Example*: If your page is about `"PostgreSQL Optimization"`, search engines expect to find related semantic entities on the page:
-- `VACUUM`
-- `WAL (Write-Ahead Logging)`
-- `B-Tree Indexing`
-- `EXPLAIN ANALYZE`
-- `Connection Pooling`
-
-If these co-occurring entities are absent, search algorithms deem the content superficial and downgrade its topical depth score.
+| Expected Co-occurring Entity | Relationship | Search Relevance Impact |
+| :--- | :--- | :--- |
+| **`B-Tree Index`** | Direct Index Type | ⭐⭐⭐⭐⭐ (Mandatory) |
+| **`EXPLAIN ANALYZE`** | Query Diagnostic | ⭐⭐⭐⭐⭐ (Mandatory) |
+| **`WAL (Write-Ahead Log)`** | Engine Architecture | ⭐⭐⭐⭐ |
+| **`VACUUM FULL`** | Database Maintenance | ⭐⭐⭐⭐ |
+| **`pg_stat_user_indexes`** | System View | ⭐⭐⭐ |
 
 ---
 
 ## 4. Summary
 
-Semantic SEO transforms content creation from keyword repetition into entity authority. By mapping entity relationship graphs, writing comprehensive topic clusters, and incorporating expected domain terminology, you build unbreakable topical authority in search engines.
+Semantic SEO transforms content creation from keyword repetition into entity graph construction. By calculating BM25 relevance scores, mapping co-occurring entity nodes, and achieving a Topical Coverage Ratio $\text{TCR} \ge 80\%$, you build unshakeable domain topical authority.

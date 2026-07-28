@@ -1,111 +1,112 @@
-# Schema Markup & Structured Data: JSON-LD & Rich Snippets
+# 📜 Schema.org Microdata & Linked Data (`@graph`) Spec
 
-> **A first-principles engineering guide to Schema.org structured data, JSON-LD microdata implementation, Knowledge Graphs, and Google Rich Snippet optimization.**
+> **SEOER.AI Lab Spec // Module 05: First-principles engineering specification for Schema.org JSON-LD microdata, nested `@graph` architecture, Wikidata/Wikipedia entity disambiguation (`sameAs`), and AI Knowledge Graph ingestion.**
 
 ---
 
 ## 📌 Executive Summary
 
-**Structured Data** is a standardized format (Schema.org vocabulary) encoded in **JSON-LD** (JavaScript Object Notation for Linked Data) that explicitly tells search engines what a web page means. Adding structured data enables Google Rich Snippets (star ratings, FAQ accordions, breadcrumbs, pricing, author bios) and provides direct entity knowledge to AI Answer Engines (Perplexity, ChatGPT, SGE).
+**Structured Data** is a standardized format (Schema.org vocabulary) encoded in **JSON-LD** (JavaScript Object Notation for Linked Data) that explicitly converts unstructured HTML into machine-readable knowledge nodes. Implementing JSON-LD triggers Google Rich Snippets (star ratings, FAQ accordions, breadcrumbs, pricing) and provides unambiguous entity data to AI Answer Engines (Perplexity, SearchGPT, SGE).
 
 ```mermaid
-flowchart LR
-    A[Raw Web Page HTML] --> B[Embed Schema.org JSON-LD Microdata]
-    B --> C[Googlebot / LLM Parses Structured JSON]
-    C --> D[Google SERP Rich Snippet: FAQ / Rating / Breadcrumb]
-    D --> E[Higher Click-Through Rate & AI Search Citation]
+flowchart TD
+    A[Unstructured Web Page HTML] --> B[Embed JSON-LD @graph Microdata]
+    B --> C1[Organization Node: @id = #organization]
+    B --> C2[WebSite Node: @id = #website]
+    B --> C3[SoftwareApplication Node: @id = #software]
+    C1 <-->|publisher / publisherOf| C3
+    C2 <-->|isPartOf| C3
+    B --> D[Google SERP Rich Snippet + AI Knowledge Graph Ingestion]
 ```
 
 ---
 
-## 1. Why JSON-LD Over Microdata or RDFa
+## 1. Why JSON-LD `@graph` Architecture Superiority
 
-Google explicitly recommends **JSON-LD**. Unlike legacy Microdata (which mixes HTML tags with attributes), JSON-LD is embedded in a clean `<script type="application/ld+json">` tag inside `<head>` or `<body>` without polluting visual presentation HTML.
+Legacy structured data embeds isolated JSON blocks on a page. Modern microdata engineering uses the **JSON-LD `@graph` architecture** to establish explicit directional relationships between entities on the same page via unique URI references (`@id`).
 
 ```json
 {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Kitwork Runtime",
-  "operatingSystem": "Linux, macOS, Windows",
-  "applicationCategory": "DeveloperApplication",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
-}
-```
-
----
-
-## 2. Essential Schema.org Types for SaaS & Web Applications
-
-### A. SoftwareApplication Schema (For SaaS / Developer Tools)
-```html
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "seoer.ai",
-  "operatingSystem": "Web",
-  "applicationCategory": "BusinessApplication",
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.9",
-    "ratingCount": "128"
-  }
-}
-</script>
-```
-
-### B. FAQPage Schema (For Rich FAQ Snippets)
-```html
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [{
-    "@type": "Question",
-    "name": "What is Generative Engine Optimization (GEO)?",
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "GEO is the practice of optimizing content to be retrieved and cited by AI answer engines like Perplexity, ChatGPT, and Google SGE."
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://seoer.ai/#organization",
+      "name": "seoer.ai",
+      "url": "https://seoer.ai",
+      "logo": "https://seoer.ai/logo.png",
+      "sameAs": [
+        "https://github.com/seoerai",
+        "https://twitter.com/seoerai"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://seoer.ai/#website",
+      "url": "https://seoer.ai",
+      "name": "seoer.ai Search Engineering Lab",
+      "publisher": { "@id": "https://seoer.ai/#organization" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://seoer.ai/#software",
+      "name": "seoer.ai Audit Engine",
+      "operatingSystem": "Linux, macOS, Windows",
+      "applicationCategory": "DeveloperApplication",
+      "author": { "@id": "https://seoer.ai/#organization" },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
     }
-  }]
+  ]
 }
-</script>
-```
-
-### C. Article / TechArticle Schema (For Blog & Documentation)
-```html
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "TechArticle",
-  "headline": "Core Web Vitals Optimization Guide",
-  "author": {
-    "@type": "Person",
-    "name": "Huỳnh Nhân Quốc"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "seoer.ai"
-  }
-}
-</script>
 ```
 
 ---
 
-## 3. Validating Structured Data
+## 2. Entity Disambiguation via `sameAs` Properties
 
-Always test JSON-LD code snippets before deploying to production:
-1. **Google Rich Results Test**: Validates eligibility for Google Rich Snippets (`search.google.com/test/rich-results`).
-2. **Schema Markup Validator**: Validates generic Schema.org syntax (`validator.schema.org`).
+Eliminate machine ambiguity by linking your entities to authoritative Knowledge Base URIs (Wikidata, Wikipedia, DBpedia, GitHub):
+
+```json
+{
+  "@type": "TechArticle",
+  "headline": "Generative Engine Optimization Engineering Spec",
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "Search Engine Optimization",
+      "sameAs": "https://www.wikidata.org/wiki/Q180711"
+    },
+    {
+      "@type": "Thing",
+      "name": "Large Language Model",
+      "sameAs": "https://www.wikidata.org/wiki/Q115305900"
+    }
+  ]
+}
+```
+
+---
+
+## 3. Dynamic Head JSON-LD Injection Pattern
+
+In modern single-page applications or SSR frameworks, inject JSON-LD microdata dynamically inside the HTML `<head>`:
+
+```javascript
+// Universal Dynamic JSON-LD Head Injector
+function injectJsonLd(schemaData) {
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.text = JSON.stringify(schemaData);
+  document.head.appendChild(script);
+}
+```
 
 ---
 
 ## 4. Summary
 
-Structured data bridges human readability and machine comprehension. By implementing JSON-LD for SoftwareApplications, FAQs, TechArticles, and Breadcrumbs, you earn Google Rich Snippets and guarantee visibility across AI search platforms.
+Structured data bridges human presentation and machine understanding. By deploying nested JSON-LD `@graph` architectures, linking entities to Wikidata via `sameAs`, and validating microdata before production deployment, you earn Google Rich Snippets and guarantee AI Knowledge Graph indexing.
