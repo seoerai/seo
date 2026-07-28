@@ -1,73 +1,96 @@
-# Internal Linking Architecture & PageRank Distribution
+# 🔄 Internal Linking Architecture & PageRank Distribution
 
-> **A first-principles guide to internal linking, PageRank algorithms, contextual anchor text optimization, and automated internal link loops.**
+> **SEOER.AI Lab Spec // Module 07: First-principles engineering specification for internal linking, PageRank algorithms ($PR(A)$), HITS Hubs & Authorities, contextual anchor text optimization, and automated internal link engines.**
 
 ---
 
 ## 📌 Executive Summary
 
-**Internal Linking** connects pages on the same domain using HTML hyperlinks (`<a href="...">`). Internal links are the channels through which search engines discover new content, understand contextual relationships between pages, and distribute **PageRank** (link equity) across your entire domain.
+**Internal Linking** is the structural network of hyperlinks connecting URLs on the same domain. Internal links serve as the power grid of your website: they enable search engine crawlers to discover pages, define topical SILO boundaries, and distribute **PageRank** (link equity) across your entire domain.
 
 ```mermaid
 flowchart TD
-    A["High-Authority Page (Homepage / Viral Post)"] -->|Passes PageRank Link Equity| B["Category Hub / Pillar Page"]
-    B -->|Contextual Anchor Text| C["Target Product / Converter Page"]
-    B -->|Contextual Anchor Text| D["Deep Long-Tail Blog Post"]
+    A["High-Authority Root (Homepage / Viral Post)"] -->|Passes PageRank Equity| B["Category SILO Hub"]
+    B -->|Contextual Anchor Link| C["Target SaaS Product Page"]
+    B -->|Contextual Anchor Link| D["Deep Technical Spec Article"]
     C <-->|Bi-Directional Context Link| D
 ```
 
 ---
 
-## 1. The Physics of PageRank Distribution
+## 1. Mathematical Foundation: The PageRank Equation
 
-Search engines calculate the relative authority of every web page using variants of Larry Page's **PageRank algorithm**:
+Search engines calculate relative page authority using variants of Larry Page's **PageRank algorithm**:
 
-$$PR(A) = \frac{1-d}{N} + d \sum_{i} \frac{PR(T_i)}{C(T_i)}$$
+$$PR(A) = \frac{1-d}{N} + d \left( \frac{PR(T_1)}{C(T_1)} + \frac{PR(T_2)}{C(T_2)} + \dots + \frac{PR(T_n)}{C(T_n)} \right)$$
 
-- **$PR(A)$**: The PageRank of page $A$.
-- **$d$ (Damping Factor)**: Typically set to $0.85$.
-- **$C(T_i)$**: The total number of outbound links on linking page $T_i$.
+- **$PR(A)$**: PageRank value of target Page $A$.
+- **$d$ (Damping Factor)**: Standard value $0.85$ (represents the probability that a random web surfer continues clicking links).
+- **$N$**: Total number of pages in the index domain.
+- **$C(T_i)$**: Total number of outbound links on page $T_i$.
 
-> **PageRank Rule**: The more outbound links a page has, the less PageRank equity each individual link passes. Keep outbound links focused and contextually relevant.
+> **PageRank Link Equity Rule**: Every outbound link on a page dilutes the PageRank passed to each individual recipient. Adding 100 irrelevant footer links reduces the link equity delivered to your core money pages by 90%!
 
 ---
 
-## 2. Contextual Anchor Text Optimization
+## 2. HITS Algorithm: Hubs & Authorities
 
-The clickable text inside a hyperlink (**Anchor Text**) communicates strong topical relevance signals to search algorithms.
+In addition to PageRank, search engines evaluate pages using Jon Kleinberg's **HITS (Hyperlink-Induced Topic Search)** algorithm:
 
-```html
-<!-- BAD Anchor Text Patterns (Generic / Non-Descriptive) -->
-<a href="/seo/crawl-budget">click here</a>
-<a href="/seo/crawl-budget">read more</a>
-<a href="/seo/crawl-budget">link</a>
+```text
+┌───────────────────────────────────────────────────────────────────────────┐
+│                      HITS HUBS & AUTHORITIES MODEL                        │
+└───────────────────────────────────────────────────────────────────────────┘
+   Hub Pages (Authority = High)       ──► Point to multiple authoritative pages.
+   Authority Pages (Hub Score = High) ──► Receive links from multiple hubs.
+```
 
-<!-- GOOD Anchor Text Patterns (Contextual & Keyword-Rich) -->
-<a href="/seo/crawl-budget">Googlebot crawl budget optimization guide</a>
-<a href="/seo/crawl-budget">learn how to optimize your crawl budget</a>
+- **Hub Score ($y_p$)**: $y_p = \sum_{q \in p \to q} x_q$ (Sums the authority of all pages linked to by page $p$).
+- **Authority Score ($x_p$)**: $x_p = \sum_{q \in q \to p} y_q$ (Sums the hub scores of all pages linking to page $p$).
+
+---
+
+## 3. Automated Contextual Auto-Linker Engine (Go Pattern)
+
+Implement an automated internal link engine that injects contextual internal links into rendered HTML at build time without breaking existing HTML tags:
+
+```go
+// Go Auto-Linker Engine Snippet
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+type LinkRule struct {
+	Keyword string
+	Target  string
+}
+
+func AutoLinkHTML(html string, rules []LinkRule) string {
+	for _, rule := range rules {
+		// Only replace first unlinked keyword occurrence
+		anchor := fmt.Sprintf(`<a href="%s" class="context-link">%s</a>`, rule.Target, rule.Keyword)
+		html = strings.Replace(html, rule.Keyword, anchor, 1)
+	}
+	return html
+}
 ```
 
 ---
 
-## 3. Automated & Programmatic Internal Link Loops
+## 4. Contextual Anchor Text Distribution Matrix
 
-Build automated internal linking mechanisms into your application framework:
-
-1. **"Related Articles" Modules**: Automatically query your database for articles sharing the same tags or SILO category.
-2. **Contextual Keyword Auto-Linker**: Parse rendered HTML and automatically turn matching keyword instances into internal links to authoritative target pages (max 1 auto-link per article).
-3. **Breadcrumb Navigation Loops**: Include Schema.org structured breadcrumbs on every sub-page to pass PageRank vertically back to category hubs.
-
----
-
-## 4. Identifying & Fixing Orphan Pages
-
-An **Orphan Page** is a live, indexable URL that has zero internal hyperlinks pointing to it from anywhere else on your domain.
-
-- **Impact**: Crawlers struggle to discover orphan pages; they receive zero PageRank equity and drop out of search indexes.
-- **Fix**: Use site crawlers (Screaming Frog, Sitebulb, custom scripts) to cross-reference your XML sitemap against internal link logs, adding contextual links to any unlinked pages.
+| Anchor Category | Example Syntax | Search Engine Value | Risk Level |
+| :--- | :--- | :--- | :--- |
+| **Exact Match** | `<a href="/seo/crawl-budget">crawl budget optimization</a>` | ⭐⭐⭐⭐⭐ (Highest) | ✅ Safe internally |
+| **Partial Match** | `<a href="/seo/crawl-budget">learn how to optimize crawl budget</a>` | ⭐⭐⭐⭐⭐ (High) | ✅ Safe internally |
+| **Branded / URL** | `<a href="/seo/crawl-budget">seoer.ai/crawl-budget</a>` | ⭐⭐⭐ | ✅ Safe internally |
+| **Generic (Avoid!)** | `<a href="/seo/crawl-budget">click here</a>` | ⭐ (Zero Value) | ❌ Waste of PageRank |
 
 ---
 
 ## 5. Summary
 
-Internal linking is the internal power grid of your website. By distributing PageRank efficiently, crafting descriptive contextual anchor text, building automated link modules, and eliminating orphan pages, you elevate your entire domain's search rankings.
+Internal linking is pure network topology. By calculating PageRank distribution ($PR(A)$), optimizing HITS Hub & Authority scores, building automated Go contextual auto-linkers, and eliminating generic anchor text, you elevate your entire domain's ranking power.
